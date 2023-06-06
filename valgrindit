@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# command to get list of errors and how to suppress them
+#valgrind --tool=memcheck --trace-children=yes --leak-check=full --gen-suppressions=all --suppressions=./valgrind_supp/sst.supp --log-file=sst.log  sst --add-lib-path=build ${1}
+
+# without suppresions, to stdout
+#valgrind --tool=memcheck --trace-children=yes --leak-check=full sst --add-lib-path=build  ${1}
+#echo 'To check this for leaks NOT caused by python or SST, grep the output for track traces including "_handle", "run", and "clock".'
+
+# without suppresions, to XML
+#valgrind --xml=yes --xml-fd=5 --trace-children=yes --child-silent-after-fork=yes --trace-children-skip-by-arg=python sst --add-lib-path=build  ${1} 5> output_from_valgrind
+#echo "See output_from_valgrind and search libMY_NAME.so for error entries."
+
+# with suppressions, but these never worked
+#valgrind --demangle=no --suppressions=docs/valgrind-python.supp --xml=yes --xml-fd=5 --trace-children=yes --child-silent-after-fork=yes --trace-children-skip-by-arg=python sst --add-lib-path=build  ${1} 5> output_from_valgrind
+
+# with suppressions
+valgrind --tool=memcheck --trace-children=yes --leak-check=full --suppressions=./valgrind_supp/sst.supp sst --add-lib-path=build ${1}
+
