@@ -40,6 +40,9 @@ protected:
   SST::Clock::Handler<Airport> *m_clock;
 
 private:
+  std::uniform_int_distribution<uint32_t> destination_dist;
+  std::uniform_int_distribution<uint32_t> delay_dist;
+  std::uniform_int_distribution<uint32_t> passenger_count_dist;
   uint32_t m_num_planes;
   std::random_device rd;
   std::mt19937 mt; 

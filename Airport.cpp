@@ -22,6 +22,12 @@ Airport::Airport(SST::ComponentId_t id, SST::Params &params) : SST::Component(id
     m_connector_links[i] = configureLink(name.str(), new SST::Event::Handler<Airport, uint32_t>(this, &Airport::handle_incoming_plane, i));
   }
 
+
+  // TODO: Make configurable
+  destination_dist = std::uniform_int_distribution<uint32_t>(0, m_num_connectors);
+  delay_dist = std::uniform_int_distribution<uint32_t>(10, 50);
+  passenger_count_dist = std::uniform_int_distribution<uint32_t>(50, 200);
+
   m_clock = new SST::Clock::Handler<Airport>(this, &Airport::clock);
   registerClock("1Hz", m_clock);
 
@@ -30,33 +36,33 @@ Airport::Airport(SST::ComponentId_t id, SST::Params &params) : SST::Component(id
 }
 void Airport::handle_incoming_plane(SST::Event* ev, uint32_t idx) {
   Airplane* ap = (Airplane*)ev;
-  std::cout << getCurrentSimTime() << ": ARRIVED IN " << m_name << " AIRSPACE " << ap << std::endl;
+  std::cout << getCurrentSimTime() << ": ENTERING AIRSPACE : " << m_name << " : " << ap << std::endl;
   ap->set_status(AirportEventType::PLANE_LANDED);
   m_self_link->send(10, ap);
 }
 void Airport::handle_self_event(SST::Event *ev) {
-  std::uniform_int_distribution<uint32_t> dist(1, 50);
-  uint32_t delay = dist(mt);
+  uint32_t delay = delay_dist(mt);
   Airplane* ap = (Airplane*)ev;
   AirportEventType et = ap->get_status();
   switch(et) {
     case AirportEventType::PLANE_LANDED:
-      std::cout << getCurrentSimTime() << ": LANDED " << ap << std::endl;
+      std::cout << getCurrentSimTime() << ": LANDED : " << m_name << " : " << ap << std::endl;
       ap->set_status(AirportEventType::PLANE_DISEMBARKED);
       m_self_link->send(delay, ap);
       break;
     case AirportEventType::PLANE_DISEMBARKED:
-      std::cout << getCurrentSimTime() << ": DISEMBARKED " << ap << std::endl;
+      std::cout << getCurrentSimTime() << ": DISEMBARKED : " << m_name << " : " << ap << std::endl;
       ap->set_status(AirportEventType::PLANE_LOADED);
       m_self_link->send(delay, ap);
       break;
     case AirportEventType::PLANE_LOADED:
-      std::cout << getCurrentSimTime() << ": PLANE LOADED " << ap << std::endl;
+      ap->set_passenger_count(passenger_count_dist(mt));
+      std::cout << getCurrentSimTime() << ": PLANE LOADED : " << m_name << " : " << ap << std::endl;
       ap->set_status(AirportEventType::PLANE_TAKEN_OFF);
       m_self_link->send(delay, ap);
       break;
     case AirportEventType::PLANE_TAKEN_OFF:
-      std::cout << getCurrentSimTime() << ": PLANE TAKEN OFF " << ap << std::endl;
+      std::cout << getCurrentSimTime() << ": PLANE TAKEN OFF : " << ap << std::endl;
       ap->set_status(AirportEventType::PLANE_TAKEN_OFF);
       m_connector_links[0]->send(delay, ap);
       break;
@@ -78,9 +84,15 @@ bool Airport::clock(SST::Cycle_t cycle) {
 }
 
 void Airport::setup() {
+  /*
+    std::uniform_int_distribution<uint32_t> destination_dist;
+    std::uniform_int_distribution<uint32_t> delay_dist;
+    std::uniform_int_distribution<uint32_t> passenger_count_dist;
+  
+  */
   std::uniform_int_distribution<uint32_t> destination(0, m_num_connectors - 1);
   std::uniform_int_distribution<uint32_t> delay(5, 50);
-  std::uniform_int_distribution<uint32_t> passenger_count(1, 200);
+  std::uniform_int_distribution<uint32_t> passenger_count(5, 200);
   for(uint32_t i = 0; i < m_num_planes; ++i) {
     std::stringstream ss;
     ss << m_name << "_" << i;
