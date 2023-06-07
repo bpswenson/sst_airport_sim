@@ -44,6 +44,11 @@ private:
   std::uniform_int_distribution<uint32_t> delay_dist;
   std::uniform_int_distribution<uint32_t> passenger_count_dist;
   uint32_t m_num_planes;
+  uint32_t m_total_passenger_departures;
+  uint32_t m_total_aircraft_departures;
+  uint32_t m_total_aircraft_arrivals;
+  uint32_t m_total_passenger_arrivals;
+
   std::random_device rd;
   std::mt19937 mt; 
   uint64_t m_clock_count;
