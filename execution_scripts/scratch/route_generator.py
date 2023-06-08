@@ -23,20 +23,37 @@ class Route:
         self.dest = dest
 
 hubs = [
+    Airport("Albuquerque", "ABQ", (35.039333, -106.610778)),
     Airport("Altanta", "ATL", (33.636667, -84.428056)),
+    Airport("Baltimore_Washington", "BWI", (39.175278, -76.668333)),
     Airport("Boston", "BOS", (42.363056, -71.006389)),
+    Airport("Charlotte_Douglas", "CLT", (35.213889, -80.943056)),
     Airport("Chicago", "ORD", (41.978611, -87.904722)),
     Airport("Chicago", "MDW", (41.786111, -87.7525)),
+    Airport("Cincinnati_Northern_Ketucky", "CVG", (39.048889, -84.667778)),
     Airport("Denver", "DEN", (42.2125, -83.353333)),
     Airport("Dallas", "DTW", (32.896944, -97.038056)),
+    Airport("Dulles", "IAD", (38.944444, -77.455833)),
+    Airport("Eppley", "OMA", (41.3, -95.895)),
+    Airport("George_Bush", "IAH", (29.984444, -95.341389)),
+    Airport("Harry_Reid", "LAS", (36.08, -115.152222)),
+    Airport("Indianapolis", "IND", (39.717222, -86.294444)),
+    Airport("John_Wayne", "SNA", (33.675556, -117.868333)),
     Airport("Minneapolis", "MSP", (44.881944, -93.221667)),
     Airport("Milwaukee", "MKE", (42.947222, -87.896667)),
+    Airport("Newark_Liberty", "EWR", (40.6925, -74.168611)),
+    Airport("Philadelphia", "PHL", (39.871944, -75.241111)),
+    Airport("Phoenix", "PHX", (33.434167, -112.011667)),
+    Airport("Portland", "PDX", (45.588611, -122.5975)),
     Airport("Los_Angeles", "LAX", (33.9425, -118.408056)),
     Airport("New_York", "LGA", (40.775, -73.875)),
     Airport("New_York", "JFK", (40.639722, -73.778889)),
     Airport("Salt_Lake_City", "SLC", (40.788333, -111.977778)),
+    Airport("San_Diego", "SAN", (32.733611, -117.189722)),
     Airport("San_Francisco", "SFO", (37.618889, -122.375)),
     Airport("Seattle_Tacoma", "SEA", (47.448889, -122.309444)),
+    Airport("Tampa", "TPA", (27.979722, -82.534722)),
+
 
 ]
 
@@ -63,7 +80,7 @@ for hub in hubs:
     output.write(fullname + ".addParams({\n")
     output.write("\t'name' : '" + fullname + "',\n")
     output.write("\t'num_connectors' : " + str(len(hubs) - 1) + ",\n")
-    output.write("\t'num_planes' : " + str((len(hubs) - 1) * 2)  + "\n")
+    output.write("\t'num_planes' : " + str((len(hubs) - 1) * 3)  + "\n")
     output.write("})\n\n")
     output.write('\n\n')            
 
