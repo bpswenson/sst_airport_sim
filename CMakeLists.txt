@@ -14,6 +14,8 @@ set(SOURCE_FILES
 		Airport.hpp
 		Airport.cpp
 		AirportEvent.hpp
+                RoughAirLink.hpp
+                RoughAirLink.cpp
 		)
 
 add_custom_target(CopyPython ALL

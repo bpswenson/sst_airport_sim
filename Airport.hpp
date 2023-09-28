@@ -8,6 +8,7 @@
 #include <sst/core/sst_types.h>
 #include <random>
 #include "Common.hpp"
+#include "RoughAirLink.hpp"
 
 
 namespace AirportSim {
@@ -55,7 +56,7 @@ private:
   String m_name;
   uint32_t m_num_connectors;
   SST::Link *m_self_link;      //!< SST Link for sending delayed events to myself
-  Vector<SST::Link*> m_connector_links;
+  Vector<RoughAirLink*> m_connector_links;
 
 };
 }  // namespace AirportSim
