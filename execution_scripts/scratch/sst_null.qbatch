@@ -18,6 +18,6 @@ module load python/3.7.7
 
 mkdir ./null/$SLURM_JOB_ID
 
-time mpirun sst --timeVortex=sst.timevortex.null_message_priority_queue /home/bswenson3/source/sst_airport_sim/build/execution_scripts/scratch/airport_sim3.py --stop-at=50000000
+time mpirun sst --timeVortex=sst.timevortex.null_message_priority_queue /home/bswenson3/source/sst_airport_sim/build/execution_scripts/scratch/airport_sim3.py --stop-at=50000000s 
 mv sst_null-$SLURM_JOB_ID* ./null/$SLRUM_JOB_ID/
 
